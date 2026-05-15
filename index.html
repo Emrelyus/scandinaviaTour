@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9 Günlük Rüya Turu</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: #2c3e50;
+            color: white;
+        }
+
+        /* 9 Sütunlu Ana Konteyner */
+        .tour-container {
+            display: flex;
+            flex-wrap: nowrap; /* Yan yana dizilmeyi zorlar */
+            height: 80vh; /* Ekran yüksekliğine göre ayar */
+            min-height: 500px;
+            overflow-x: auto; /* Küçük ekranlarda kaydırma çubuğu çıkar */
+        }
+
+        /* Her Bir Gün Sütunu */
+        .day-column {
+            flex: 1;
+            min-width: 150px; /* Sütunların çok daralmasını engeller */
+            border-right: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        /* Sütun Renkleri (Görsel yoksa alternatif) */
+        .day-column:nth-child(odd) { background-color: #34495e; }
+        .day-column:nth-child(even) { background-color: #2980b9; }
+
+        /* Üst Kısım: Tarih */
+        .date-box {
+            padding: 20px 10px;
+            background: rgba(0,0,0,0.5);
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* Alt Kısım: Yer Bilgisi */
+        .location-box {
+            margin-top: auto; /* En alta iter */
+            padding: 30px 10px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Hover Efekti: Üzerine gelince genişler */
+        .day-column:hover {
+            flex: 1.5;
+            background-color: #e67e22 !important;
+        }
+
+        /* Mobil Uyumluluk */
+        @media (max-width: 768px) {
+            .tour-container {
+                flex-direction: column;
+                height: auto;
+            }
+            .day-column {
+                height: 150px;
+                border-right: none;
+                border-bottom: 1px solid white;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>İskandinavya Turu 2026</h1>
+    <p>Stockholm · Oslo · Göteborg · Kopenhag · Hamburg</p>
+</div>
+
+<div class="tour-container">
+    <!-- 1. GÜN -->
+    <div class="day-column">
+        <div class="date-box">22 MAYIS</div>
+        <div class="location-box">Stockholm</div>
+    </div>
+
+    <!-- 2. GÜN -->
+    <div class="day-column">
+        <div class="date-box">23 MAYIS</div>
+        <div class="location-box">Stockholm</div>
+    </div>
+
+    <!-- 3. GÜN -->
+    <div class="day-column">
+        <div class="date-box">24 MAYIS</div>
+        <div class="location-box">Oslo</div>
+    </div>
+
+    <!-- 4. GÜN -->
+    <div class="day-column">
+        <div class="date-box">25 MAYIS</div>
+        <div class="location-box">Oslo</div>
+    </div>
+
+    <!-- 5. GÜN -->
+    <div class="day-column">
+        <div class="date-box">26 MAYIS</div>
+        <div class="location-box">Göteborg</div>
+    </div>
+
+    <!-- 6. GÜN -->
+    <div class="day-column">
+        <div class="date-box">27 MAYIS</div>
+        <div class="location-box">Kopenhag</div>
+    </div>
+
+    <!-- 7. GÜN -->
+    <div class="day-column">
+        <div class="date-box">28 MAYIS</div>
+        <div class="location-box">Kopenhag</div>
+    </div>
+
+    <!-- 8. GÜN -->
+    <div class="day-column">
+        <div class="date-box">29 MAYIS</div>
+        <div class="location-box">Hamburg</div>
+    </div>
+
+    <!-- 9. GÜN -->
+    <div class="day-column">
+        <div class="date-box">30 MAYIS</div>
+        <div class="location-box">Hamburg</div>
+    </div>
+</div>
+
+</body>
+</html>
