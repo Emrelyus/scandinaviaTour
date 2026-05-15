@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>9 Günlük Rüya Turu</title>
+    <title>9 Gün İskandinavya</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -144,6 +144,53 @@
             opacity: 0.65;
         }
 
+        /* Otöbüs Bilgisi */
+        .bus-box {
+            margin: 8px 8px 0;
+            padding: 10px 8px;
+            background: rgba(255,255,255,0.1);
+            border: 1px dashed rgba(255,255,255,0.4);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.72rem;
+        }
+
+        .bus-box .bus-icon {
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .bus-box .bus-route {
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .bus-box .bus-route .arrow {
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        .bus-box .bus-times {
+            margin-top: 5px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        .bus-box .bus-airline {
+            margin-top: 4px;
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            opacity: 0.65;
+        }
+
         /* Hover Efekti: Üzerine gelince genişler */
         .day-column:hover {
             flex: 1.5;
@@ -161,9 +208,43 @@
                 border-bottom: 1px solid white;
             }
         }
+
+        /* Sağ Üst Saat & Tarih */
+        .clock-widget {
+            position: fixed;
+            top: 16px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 8px 16px;
+            color: white;
+            text-align: right;
+            z-index: 999;
+            line-height: 1.4;
+        }
+
+        .clock-widget .clock-time {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .clock-widget .clock-date {
+            font-size: 0.7rem;
+            opacity: 0.75;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
     </style>
 </head>
 <body>
+
+<div class="clock-widget">
+    <div class="clock-time" id="clock-time">00:00:00</div>
+    <div class="clock-date" id="clock-date">--</div>
+</div>
 
 <div class="header">
     <h1>İskandinavya Turu 2026</h1>
@@ -199,6 +280,16 @@
     <div class="day-column city-oslo">
         <div class="date-box">24 MAYIS</div>
         <div class="location-box">Oslo</div>
+        <div class="bus-box">
+            <span class="bus-icon">🚌</span>
+            <div class="bus-route">
+                <strong>Stockholm</strong>
+                <span class="arrow">→</span>
+                <strong>Oslo</strong>
+            </div>
+            <div class="bus-times">08:00 &mdash; 15:10</div>
+            <div class="bus-airline">Flixbus</div>
+        </div>
         <div class="hotel-box"><span>Otel</span>Radisson Otel Oslo</div>
     </div>
 
@@ -213,6 +304,16 @@
     <div class="day-column city-goteborg">
         <div class="date-box">26 MAYIS</div>
         <div class="location-box">Göteborg</div>
+        <div class="bus-box">
+            <span class="bus-icon">🚌</span>
+            <div class="bus-route">
+                <strong>Oslo</strong>
+                <span class="arrow">→</span>
+                <strong>Göteborg</strong>
+            </div>
+            <div class="bus-times">07:30 &mdash; 11:05</div>
+            <div class="bus-airline">Vy Bus</div>
+        </div>
         <div class="hotel-box"><span>Otel</span>Scandic Crown Göteborg</div>
     </div>
 
@@ -220,6 +321,16 @@
     <div class="day-column city-kopenhag">
         <div class="date-box">27 MAYIS</div>
         <div class="location-box">Kopenhag</div>
+        <div class="bus-box">
+            <span class="bus-icon">🚌</span>
+            <div class="bus-route">
+                <strong>Göteborg</strong>
+                <span class="arrow">→</span>
+                <strong>Kopenhag</strong>
+            </div>
+            <div class="bus-times">07:00 &mdash; 11:20</div>
+            <div class="bus-airline">Vy Bus</div>
+        </div>
         <div class="hotel-box"><span>Otel</span>Wakeup Comfort Kopenhag</div>
     </div>
 
@@ -234,6 +345,16 @@
     <div class="day-column city-hamburg">
         <div class="date-box">29 MAYIS</div>
         <div class="location-box">Hamburg</div>
+        <div class="bus-box">
+            <span class="bus-icon">🚌</span>
+            <div class="bus-route">
+                <strong>Kopenhag</strong>
+                <span class="arrow">→</span>
+                <strong>Hamburg</strong>
+            </div>
+            <div class="bus-times">07:45 &mdash; 13:05</div>
+            <div class="bus-airline">Flixbus</div>
+        </div>
         <div class="hotel-box"><span>Otel</span>Generator Hotel Hamburg</div>
     </div>
 
@@ -255,4 +376,28 @@
 </div>
 
 </body>
+
+<script>
+    const DAYS_TR = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+    const MONTHS_TR = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran',
+                       'Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+
+    function updateClock() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2,'0');
+        const m = String(now.getMinutes()).padStart(2,'0');
+        const s = String(now.getSeconds()).padStart(2,'0');
+        document.getElementById('clock-time').textContent = `${h}:${m}:${s}`;
+
+        const day   = DAYS_TR[now.getDay()];
+        const date  = now.getDate();
+        const month = MONTHS_TR[now.getMonth()];
+        const year  = now.getFullYear();
+        document.getElementById('clock-date').textContent = `${day}, ${date} ${month} ${year}`;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+</script>
+
 </html>
