@@ -43,9 +43,19 @@
             color: white;
         }
 
-        /* Sütun Renkleri (Görsel yoksa alternatif) */
-        .day-column:nth-child(odd) { background-color: #34495e; }
-        .day-column:nth-child(even) { background-color: #2980b9; }
+        /* Şehre Göre Sütun Renkleri */
+        .city-stockholm  { background-color: #1a5f7a; }
+        .city-oslo       { background-color: #2d6a4f; }
+        .city-goteborg   { background-color: #b5600e; }
+        .city-kopenhag   { background-color: #5b3a8a; }
+        .city-hamburg    { background-color: #8a3030; }
+
+        /* Hover rengi şehre özgü ama biraz aydınlatılmış */
+        .city-stockholm:hover  { background-color: #2490b8 !important; }
+        .city-oslo:hover       { background-color: #3a9068 !important; }
+        .city-goteborg:hover   { background-color: #e07b1a !important; }
+        .city-kopenhag:hover   { background-color: #7b50c0 !important; }
+        .city-hamburg:hover    { background-color: #bb4444 !important; }
 
         /* Üst Kısım: Tarih */
         .date-box {
@@ -56,20 +66,87 @@
             font-size: 0.9rem;
         }
 
-        /* Alt Kısım: Yer Bilgisi */
+        /* Tarihin Hemen Altı: Şehir Adı */
         .location-box {
-            margin-top: auto; /* En alta iter */
-            padding: 30px 10px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 12px 10px;
+            background: rgba(0,0,0,0.35);
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        /* En Alt: Otel Adı */
+        .hotel-box {
+            margin-top: auto;
+            padding: 20px 10px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            opacity: 0.9;
+        }
+
+        .hotel-box span {
+            display: block;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        /* Uçuş Bilgisi */
+        .flight-box {
+            margin: 8px 8px 0;
+            padding: 10px 8px;
+            background: rgba(255,255,255,0.12);
+            border: 1px dashed rgba(255,255,255,0.45);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.72rem;
+        }
+
+        .flight-box .flight-icon {
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .flight-box .flight-route {
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .flight-box .flight-route .arrow {
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        .flight-box .flight-times {
+            margin-top: 5px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        .flight-box .flight-airline {
+            margin-top: 4px;
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            opacity: 0.65;
         }
 
         /* Hover Efekti: Üzerine gelince genişler */
         .day-column:hover {
             flex: 1.5;
-            background-color: #e67e22 !important;
         }
 
         /* Mobil Uyumluluk */
@@ -95,57 +172,85 @@
 
 <div class="tour-container">
     <!-- 1. GÜN -->
-    <div class="day-column">
+    <div class="day-column city-stockholm">
         <div class="date-box">22 MAYIS</div>
         <div class="location-box">Stockholm</div>
+        <div class="flight-box">
+            <span class="flight-icon">✈️</span>
+            <div class="flight-route">
+                <strong>SAW</strong>
+                <span class="arrow">→</span>
+                <strong>ARL</strong>
+            </div>
+            <div class="flight-times">08:30 &mdash; 11:10</div>
+            <div class="flight-airline">Pegasus</div>
+        </div>
+        <div class="hotel-box"><span>Otel</span>Comfort Hotel Stockholm</div>
     </div>
 
     <!-- 2. GÜN -->
-    <div class="day-column">
+    <div class="day-column city-stockholm">
         <div class="date-box">23 MAYIS</div>
         <div class="location-box">Stockholm</div>
+        <div class="hotel-box"><span>Otel</span>Comfort Hotel Stockholm</div>
     </div>
 
     <!-- 3. GÜN -->
-    <div class="day-column">
+    <div class="day-column city-oslo">
         <div class="date-box">24 MAYIS</div>
         <div class="location-box">Oslo</div>
+        <div class="hotel-box"><span>Otel</span>Radisson Otel Oslo</div>
     </div>
 
     <!-- 4. GÜN -->
-    <div class="day-column">
+    <div class="day-column city-oslo">
         <div class="date-box">25 MAYIS</div>
         <div class="location-box">Oslo</div>
+        <div class="hotel-box"><span>Otel</span>Radisson Otel Oslo</div>
     </div>
 
     <!-- 5. GÜN -->
-    <div class="day-column">
+    <div class="day-column city-goteborg">
         <div class="date-box">26 MAYIS</div>
         <div class="location-box">Göteborg</div>
+        <div class="hotel-box"><span>Otel</span>Scandic Crown Göteborg</div>
     </div>
 
     <!-- 6. GÜN -->
-    <div class="day-column">
+    <div class="day-column city-kopenhag">
         <div class="date-box">27 MAYIS</div>
         <div class="location-box">Kopenhag</div>
+        <div class="hotel-box"><span>Otel</span>Wakeup Comfort Kopenhag</div>
     </div>
 
     <!-- 7. GÜN -->
-    <div class="day-column">
+    <div class="day-column city-kopenhag">
         <div class="date-box">28 MAYIS</div>
         <div class="location-box">Kopenhag</div>
+        <div class="hotel-box"><span>Otel</span>Wakeup Comfort Kopenhag</div>
     </div>
 
     <!-- 8. GÜN -->
-    <div class="day-column">
+    <div class="day-column city-hamburg">
         <div class="date-box">29 MAYIS</div>
         <div class="location-box">Hamburg</div>
+        <div class="hotel-box"><span>Otel</span>Generator Hotel Hamburg</div>
     </div>
 
     <!-- 9. GÜN -->
-    <div class="day-column">
+    <div class="day-column city-hamburg">
         <div class="date-box">30 MAYIS</div>
         <div class="location-box">Hamburg</div>
+        <div class="flight-box">
+            <span class="flight-icon">✈️</span>
+            <div class="flight-route">
+                <strong>HAM</strong>
+                <span class="arrow">→</span>
+                <strong>SAW</strong>
+            </div>
+            <div class="flight-times">13:50 &mdash; 16:30</div>
+            <div class="flight-airline">Pegasus</div>
+        </div>
     </div>
 </div>
 
