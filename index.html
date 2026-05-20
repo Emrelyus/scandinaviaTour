@@ -83,11 +83,22 @@
         .city-hamburg:hover    { background-color: #bb4444 !important; }
 
         .date-box {
-            padding: 20px 10px;
+            padding: 12px 10px 10px;
             background: rgba(0,0,0,0.5);
             text-align: center;
             font-weight: bold;
             font-size: 0.9rem;
+            line-height: 1.2;
+        }
+
+        .date-day {
+            display: block;
+            font-size: 0.62rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            opacity: 0.7;
+            margin-top: 3px;
         }
 
         .location-box {
@@ -127,6 +138,7 @@
             border-radius: 8px;
             text-align: center;
             font-size: 0.72rem;
+            box-sizing: border-box;
         }
 
         .flight-box .flight-icon {
@@ -157,6 +169,31 @@
             border-radius: 8px;
             text-align: center;
             font-size: 0.72rem;
+            box-sizing: border-box;
+        }
+
+        /* Transport area – fixed height for all columns */
+        .transport-area {
+            height: 110px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Full-width dashed divider */
+        .col-divider {
+            border: none;
+            border-top: 1px dashed rgba(255,255,255,0.35);
+            margin: 5px 0 0 0;
+            flex-shrink: 0;
+        }
+
+        /* Transport placeholder for days without travel */
+        .transport-spacer {
+            margin: 8px 8px 0;
+            min-height: 88px;
+            box-sizing: border-box;
         }
 
         .bus-box .bus-icon { font-size: 1.1rem; display: block; margin-bottom: 4px; }
@@ -375,6 +412,27 @@
         .it-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 2px; }
         .it-desc  { font-size: 0.72rem; opacity: 0.65; line-height: 1.4; }
 
+        /* Places list inside column */
+        .places-box {
+            padding: 12px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .place-tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 3px 10px;
+            white-space: nowrap;
+            opacity: 0.9;
+        }
+
         /* Sağ Üst Saat */
         .clock-widget {
             position: fixed;
@@ -416,103 +474,149 @@
 
 <!-- ===== COLUMNS VIEW ===== -->
 <div class="tour-container" id="columns-view">
+
     <!-- 1. GÜN -->
     <div class="day-column city-stockholm" onclick="openModal(0)">
-        <div class="date-box">22 MAYIS</div>
+        <div class="date-box">22 MAYIS<span class="date-day">Cuma</span></div>
         <div class="location-box">Stockholm</div>
-        <div class="flight-box">
-            <span class="flight-icon">✈️</span>
-            <div class="flight-route"><strong>SAW</strong><span class="arrow">→</span><strong>ARL</strong></div>
-            <div class="flight-times">08:30 &mdash; 11:10</div>
-            <div class="flight-airline">Pegasus</div>
+        <div class="transport-area">
+            <div class="flight-box">
+                <span class="flight-icon">✈️</span>
+                <div class="flight-route"><strong>SAW</strong><span class="arrow">→</span><strong>ARL</strong></div>
+                <div class="flight-times">08:30 &mdash; 11:10</div>
+                <div class="flight-airline">Pegasus</div>
+            </div>
+        </div>
+        <hr class="col-divider">
+        <div class="places-box">
+            <div class="place-tag">Gamla Stan</div>
+            <div class="place-tag">Kungliga Slottet</div>
+            <div class="place-tag">Södermalm</div>
+            <div class="place-tag">Skansen</div>
+            <div class="place-tag">Vasa Müzesi</div>
+            <div class="place-tag">Stadsbiblioteket</div>
+            <div class="place-tag">Drottninggatan</div>
+            <div class="place-tag">Kungsträdgården</div>
         </div>
         <div class="hotel-box"><span>Otel</span>Comfort Hotel Stockholm</div>
     </div>
 
     <!-- 2. GÜN -->
     <div class="day-column city-stockholm" onclick="openModal(1)">
-        <div class="date-box">23 MAYIS</div>
+        <div class="date-box">23 MAYIS<span class="date-day">Cumartesi</span></div>
         <div class="location-box">Stockholm</div>
+        <div class="transport-area"></div>
+        <hr class="col-divider">
+        <div class="places-box">
+            <div class="place-tag">Gamla Stan</div>
+            <div class="place-tag">Kungliga Slottet</div>
+            <div class="place-tag">Södermalm</div>
+            <div class="place-tag">Skansen</div>
+            <div class="place-tag">Vasa Müzesi</div>
+            <div class="place-tag">Stadsbiblioteket</div>
+            <div class="place-tag">Drottninggatan</div>
+            <div class="place-tag">Kungsträdgården</div>
+        </div>
         <div class="hotel-box"><span>Otel</span>Comfort Hotel Stockholm</div>
     </div>
 
     <!-- 3. GÜN -->
     <div class="day-column city-oslo" onclick="openModal(2)">
-        <div class="date-box">24 MAYIS</div>
+        <div class="date-box">24 MAYIS<span class="date-day">Pazar</span></div>
         <div class="location-box">Oslo</div>
-        <div class="bus-box">
-            <span class="bus-icon">🚌</span>
-            <div class="bus-route"><strong>Stockholm</strong><span class="arrow">→</span><strong>Oslo</strong></div>
-            <div class="bus-times">08:00 &mdash; 15:10</div>
-            <div class="bus-airline">Flixbus</div>
+        <div class="transport-area">
+            <div class="bus-box">
+                <span class="bus-icon">🚌</span>
+                <div class="bus-route"><strong>Stockholm</strong><span class="arrow">→</span><strong>Oslo</strong></div>
+                <div class="bus-times">08:00 &mdash; 15:10</div>
+                <div class="bus-airline">Flixbus</div>
+            </div>
         </div>
+        <hr class="col-divider">
         <div class="hotel-box"><span>Otel</span>Radisson Otel Oslo</div>
     </div>
 
     <!-- 4. GÜN -->
     <div class="day-column city-oslo" onclick="openModal(3)">
-        <div class="date-box">25 MAYIS</div>
+        <div class="date-box">25 MAYIS<span class="date-day">Pazartesi</span></div>
         <div class="location-box">Oslo</div>
+        <div class="transport-area"></div>
+        <hr class="col-divider">
         <div class="hotel-box"><span>Otel</span>Radisson Otel Oslo</div>
     </div>
 
     <!-- 5. GÜN -->
     <div class="day-column city-goteborg" onclick="openModal(4)">
-        <div class="date-box">26 MAYIS</div>
+        <div class="date-box">26 MAYIS<span class="date-day">Salı</span></div>
         <div class="location-box">Göteborg</div>
-        <div class="bus-box">
-            <span class="bus-icon">🚌</span>
-            <div class="bus-route"><strong>Oslo</strong><span class="arrow">→</span><strong>Göteborg</strong></div>
-            <div class="bus-times">07:30 &mdash; 11:05</div>
-            <div class="bus-airline">Vy Bus</div>
+        <div class="transport-area">
+            <div class="bus-box">
+                <span class="bus-icon">🚌</span>
+                <div class="bus-route"><strong>Oslo</strong><span class="arrow">→</span><strong>Göteborg</strong></div>
+                <div class="bus-times">07:30 &mdash; 11:05</div>
+                <div class="bus-airline">Vy Bus</div>
+            </div>
         </div>
+        <hr class="col-divider">
         <div class="hotel-box"><span>Otel</span>Scandic Crown Göteborg</div>
     </div>
 
     <!-- 6. GÜN -->
     <div class="day-column city-kopenhag" onclick="openModal(5)">
-        <div class="date-box">27 MAYIS</div>
+        <div class="date-box">27 MAYIS<span class="date-day">Çarşamba</span></div>
         <div class="location-box">Kopenhag</div>
-        <div class="bus-box">
-            <span class="bus-icon">🚌</span>
-            <div class="bus-route"><strong>Göteborg</strong><span class="arrow">→</span><strong>Kopenhag</strong></div>
-            <div class="bus-times">07:00 &mdash; 11:20</div>
-            <div class="bus-airline">Vy Bus</div>
+        <div class="transport-area">
+            <div class="bus-box">
+                <span class="bus-icon">🚌</span>
+                <div class="bus-route"><strong>Göteborg</strong><span class="arrow">→</span><strong>Kopenhag</strong></div>
+                <div class="bus-times">07:00 &mdash; 11:20</div>
+                <div class="bus-airline">Vy Bus</div>
+            </div>
         </div>
+        <hr class="col-divider">
         <div class="hotel-box"><span>Otel</span>Wakeup Comfort Kopenhag</div>
     </div>
 
     <!-- 7. GÜN -->
     <div class="day-column city-kopenhag" onclick="openModal(6)">
-        <div class="date-box">28 MAYIS</div>
+        <div class="date-box">28 MAYIS<span class="date-day">Perşembe</span></div>
         <div class="location-box">Kopenhag</div>
+        <div class="transport-area"></div>
+        <hr class="col-divider">
         <div class="hotel-box"><span>Otel</span>Wakeup Comfort Kopenhag</div>
     </div>
 
     <!-- 8. GÜN -->
     <div class="day-column city-hamburg" onclick="openModal(7)">
-        <div class="date-box">29 MAYIS</div>
+        <div class="date-box">29 MAYIS<span class="date-day">Cuma</span></div>
         <div class="location-box">Hamburg</div>
-        <div class="bus-box">
-            <span class="bus-icon">🚌</span>
-            <div class="bus-route"><strong>Kopenhag</strong><span class="arrow">→</span><strong>Hamburg</strong></div>
-            <div class="bus-times">07:45 &mdash; 13:05</div>
-            <div class="bus-airline">Flixbus</div>
+        <div class="transport-area">
+            <div class="bus-box">
+                <span class="bus-icon">🚌</span>
+                <div class="bus-route"><strong>Kopenhag</strong><span class="arrow">→</span><strong>Hamburg</strong></div>
+                <div class="bus-times">07:45 &mdash; 13:05</div>
+                <div class="bus-airline">Flixbus</div>
+            </div>
         </div>
+        <hr class="col-divider">
         <div class="hotel-box"><span>Otel</span>Generator Hotel Hamburg</div>
     </div>
 
     <!-- 9. GÜN -->
     <div class="day-column city-hamburg" onclick="openModal(8)">
-        <div class="date-box">30 MAYIS</div>
+        <div class="date-box">30 MAYIS<span class="date-day">Cumartesi</span></div>
         <div class="location-box">Hamburg</div>
-        <div class="flight-box">
-            <span class="flight-icon">✈️</span>
-            <div class="flight-route"><strong>HAM</strong><span class="arrow">→</span><strong>SAW</strong></div>
-            <div class="flight-times">13:50 &mdash; 16:30</div>
-            <div class="flight-airline">Pegasus</div>
+        <div class="transport-area">
+            <div class="flight-box">
+                <span class="flight-icon">✈️</span>
+                <div class="flight-route"><strong>HAM</strong><span class="arrow">→</span><strong>SAW</strong></div>
+                <div class="flight-times">13:50 &mdash; 16:30</div>
+                <div class="flight-airline">Pegasus</div>
+            </div>
         </div>
+        <hr class="col-divider">
     </div>
+
 </div>
 
 <!-- ===== GRID VIEW ===== -->
@@ -570,33 +674,33 @@
     ];
 
     const days = [
-        { num: 1, date: '22 MAYIS', city: 'Stockholm', cityClass: 'city-stockholm',
+        { num: 1, date: '22 MAYIS', dayName: 'Cuma', city: 'Stockholm', cityClass: 'city-stockholm',
           transport: { type: 'flight', icon: '✈️', from: 'SAW', to: 'ARL', dep: '08:30', arr: '11:10', carrier: 'Pegasus' },
           hotel: 'Comfort Hotel Stockholm',
           districts: stockholmDistricts, itinerary: stockholmItinerary },
-        { num: 2, date: '23 MAYIS', city: 'Stockholm', cityClass: 'city-stockholm',
+        { num: 2, date: '23 MAYIS', dayName: 'Cumartesi', city: 'Stockholm', cityClass: 'city-stockholm',
           transport: null,
           hotel: 'Comfort Hotel Stockholm',
           districts: stockholmDistricts, itinerary: stockholmItinerary },
-        { num: 3, date: '24 MAYIS', city: 'Oslo', cityClass: 'city-oslo',
+        { num: 3, date: '24 MAYIS', dayName: 'Pazar', city: 'Oslo', cityClass: 'city-oslo',
           transport: { type: 'bus', icon: '🚌', from: 'Stockholm', to: 'Oslo', dep: '08:00', arr: '15:10', carrier: 'Flixbus' },
           hotel: 'Radisson Otel Oslo' },
-        { num: 4, date: '25 MAYIS', city: 'Oslo', cityClass: 'city-oslo',
+        { num: 4, date: '25 MAYIS', dayName: 'Pazartesi', city: 'Oslo', cityClass: 'city-oslo',
           transport: null,
           hotel: 'Radisson Otel Oslo' },
-        { num: 5, date: '26 MAYIS', city: 'Göteborg', cityClass: 'city-goteborg',
+        { num: 5, date: '26 MAYIS', dayName: 'Salı', city: 'Göteborg', cityClass: 'city-goteborg',
           transport: { type: 'bus', icon: '🚌', from: 'Oslo', to: 'Göteborg', dep: '07:30', arr: '11:05', carrier: 'Vy Bus' },
           hotel: 'Scandic Crown Göteborg' },
-        { num: 6, date: '27 MAYIS', city: 'Kopenhag', cityClass: 'city-kopenhag',
+        { num: 6, date: '27 MAYIS', dayName: 'Çarşamba', city: 'Kopenhag', cityClass: 'city-kopenhag',
           transport: { type: 'bus', icon: '🚌', from: 'Göteborg', to: 'Kopenhag', dep: '07:00', arr: '11:20', carrier: 'Vy Bus' },
           hotel: 'Wakeup Comfort Kopenhag' },
-        { num: 7, date: '28 MAYIS', city: 'Kopenhag', cityClass: 'city-kopenhag',
+        { num: 7, date: '28 MAYIS', dayName: 'Perşembe', city: 'Kopenhag', cityClass: 'city-kopenhag',
           transport: null,
           hotel: 'Wakeup Comfort Kopenhag' },
-        { num: 8, date: '29 MAYIS', city: 'Hamburg', cityClass: 'city-hamburg',
+        { num: 8, date: '29 MAYIS', dayName: 'Cuma', city: 'Hamburg', cityClass: 'city-hamburg',
           transport: { type: 'bus', icon: '🚌', from: 'Kopenhag', to: 'Hamburg', dep: '07:45', arr: '13:05', carrier: 'Flixbus' },
           hotel: 'Generator Hotel Hamburg' },
-        { num: 9, date: '30 MAYIS', city: 'Hamburg', cityClass: 'city-hamburg',
+        { num: 9, date: '30 MAYIS', dayName: 'Cumartesi', city: 'Hamburg', cityClass: 'city-hamburg',
           transport: { type: 'flight', icon: '✈️', from: 'HAM', to: 'SAW', dep: '13:50', arr: '16:30', carrier: 'Pegasus' },
           hotel: null }
     ];
@@ -648,7 +752,7 @@
     function openModal(i) {
         const d = days[i];
         document.getElementById('modal-day-num').textContent = `GÜN ${d.num}`;
-        document.getElementById('modal-date').textContent = d.date;
+        document.getElementById('modal-date').textContent = `${d.date} — ${d.dayName}`;
         document.getElementById('modal-city').textContent = `📍 ${d.city}`;
 
         let body = '';
