@@ -994,13 +994,12 @@
     const correctUser = "admin";
     const correctPass = "iskandinavya2026";
 
-    document.addEventListener("DOMContentLoaded", () => {
-        if (localStorage.getItem("tour_logged_in") === "true") {
-            document.body.classList.remove("logged-out");
-            const overlay = document.getElementById("login-overlay");
-            if (overlay) overlay.style.display = "none";
-        }
-    });
+    // Sayfa yüklenir yüklenmez (flicker olmadan) hızlı kontrol
+    if (localStorage.getItem("tour_logged_in") === "true") {
+        document.body.classList.remove("logged-out");
+        const overlay = document.getElementById("login-overlay");
+        if (overlay) overlay.style.display = "none";
+    }
 
     function handleLogin(event) {
         event.preventDefault();
