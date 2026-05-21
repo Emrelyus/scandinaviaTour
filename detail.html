@@ -676,10 +676,11 @@
 
     <div class="city-quick-stats">
         <div class="stat-card glass-panel">
-            <span class="stat-icon">🌡️</span>
+            <span class="stat-icon" id="stat-temp-icon">🌡️</span>
             <div class="stat-info">
                 <span class="stat-label">Sıcaklık</span>
                 <span class="stat-value" id="stat-temp">--</span>
+                <span style="font-size: 0.72rem; color: #a5b4fc; margin-top: 2px; font-weight: 600;" id="stat-temp-cond">--</span>
             </div>
         </div>
         <div class="stat-card glass-panel">
@@ -779,7 +780,19 @@
 
     // Set Stats
     const stats = cityStats[d.city] || { temp: '--', timezone: '--', currency: '--', currencyRate: '--', lang: '--' };
-    document.getElementById('stat-temp').textContent = stats.temp;
+    
+    // Gün bazlı hava durumu verisi varsa oradan, yoksa genel şehir sıcaklığından çekilir
+    if (d.weather) {
+        document.getElementById('stat-temp').textContent = d.weather.temp;
+        document.getElementById('stat-temp-cond').textContent = d.weather.cond;
+        if (d.weather.icon) {
+            document.getElementById('stat-temp-icon').textContent = d.weather.icon;
+        }
+    } else {
+        document.getElementById('stat-temp').textContent = stats.temp;
+        document.getElementById('stat-temp-cond').textContent = '';
+    }
+    
     document.getElementById('stat-timezone').textContent = stats.timezone;
     document.getElementById('stat-currency').textContent = stats.currency;
     document.getElementById('stat-currency-rate').textContent = stats.currencyRate || '';
