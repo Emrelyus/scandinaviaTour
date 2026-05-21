@@ -36,7 +36,7 @@ const hamburgDistricts = [
 
 const stockholmItinerary1 = [
     { icon: '✈️', title: 'Uçuş ve Varış', desc: 'İstanbul Sabiha Gökçen\'den ARL Havalimanı\'na uçuş. Havalimanından şehir merkezine transfer.' },
-    { icon: '🏨', title: 'Otele Yerleşim', desc: 'Comfort Hotel Stockholm\'e giriş ve kısa bir dinlenme.' },
+    { icon: '🏨', title: 'Otele Yerleşim', desc: 'Comfort Hotel Xpress Stockholm\'e giriş ve kısa bir dinlenme.' },
     { icon: '🏰', title: 'Gamla Stan Keşfi', desc: 'Avrupa\'nın en iyi korunmuş ortaçağ eski şehir merkezi. Renkli dar sokaklar.' },
     { icon: '💂', title: 'Kraliyet Sarayı', desc: 'Kungliga Slottet Sarayı önünde nöbet değişimi törenini izleme.' },
     { icon: '☕', title: 'Fika Molası', desc: 'İsveç\'in meşhur kahve ve tarçınlı çörek (Kanelbulle) ritüeli.' },
@@ -106,11 +106,11 @@ const hamburgItinerary9 = [
 const days = [
     { num: 1, date: '22 MAYIS', dayName: 'Cuma', city: 'Stockholm', cityClass: 'city-stockholm',
       transport: { type: 'flight', icon: '✈️', from: 'SAW', to: 'ARL', dep: '08:30', arr: '11:10', carrier: 'Pegasus' },
-      hotel: 'Comfort Hotel Stockholm',
+      hotel: 'Comfort Hotel Xpress Stockholm',
       districts: stockholmDistricts, itinerary: stockholmItinerary1 },
     { num: 2, date: '23 MAYIS', dayName: 'Cumartesi', city: 'Stockholm', cityClass: 'city-stockholm',
       transport: null,
-      hotel: 'Comfort Hotel Stockholm',
+      hotel: 'Comfort Hotel Xpress Stockholm',
       districts: stockholmDistricts, itinerary: stockholmItinerary2 },
     { num: 3, date: '24 MAYIS', dayName: 'Pazar', city: 'Oslo', cityClass: 'city-oslo',
       transport: { type: 'bus', icon: '🚌', from: 'Stockholm', to: 'Oslo', dep: '08:00', arr: '15:10', carrier: 'Flixbus' },
