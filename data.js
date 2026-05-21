@@ -53,7 +53,7 @@ const stockholmItinerary2 = [
 
 const osloItinerary3 = [
     { icon: '🚌', title: 'Manzaralı Yolculuk', desc: 'İsveç ormanları ve gölleri eşliğinde Stockholm\'den Oslo\'ya konforlu geçiş.' },
-    { icon: '🏨', title: 'Otele Yerleşim', desc: 'Radisson Otel Oslo\'ya giriş ve dinlenme.' },
+    { icon: '🏨', title: 'Otele Yerleşim', desc: 'Radisson Blu Scandinavia Hotel, Oslo\'ya giriş ve dinlenme.' },
     { icon: '🚶‍♂️', title: 'Karl Johans Gate', desc: 'Oslo\'nun kalbinde yer alan, dükkanlar ve kafelerle süslü yürüyüş caddesi.' },
     { icon: '🏛️', title: 'Parlamento ve Kraliyet Sarayı', desc: 'Tarihi parlamento binası önünden geçerek tepe üzerindeki saray bahçelerini gezme.' },
     { icon: '⛵', title: 'Aker Brygge Akşamı', desc: 'Eski tersaneden modern bir yaşam merkezine dönüşen limanda deniz mahsulleri ziyafeti.' }
@@ -76,7 +76,7 @@ const goteborgItinerary5 = [
 
 const kopenhagItinerary6 = [
     { icon: '🚌', title: 'Öresund Köprüsü\'nden Geçiş', desc: 'İsveç ile Danimarka\'yı birbirine bağlayan efsanevi köprü üzerinden Kopenhag\'a geçiş.' },
-    { icon: '🏨', title: 'Otele Yerleşim', desc: 'Wakeup Comfort Kopenhag\'a yerleşim.' },
+    { icon: '🏨', title: 'Otele Yerleşim', desc: 'Wakeup Copenhagen, Bernstorffsgade\'ye yerleşim.' },
     { icon: '⛵', title: 'Nyhavn Kanal Yürüyüşü', desc: 'Kopenhag kartpostallarını süsleyen renkli 17. yüzyıl evlerinin önünde yürüyüş.' },
     { icon: '🇩🇰', title: 'Amalienborg Sarayı', desc: 'Kraliyet ailesinin kışlık rezidansında nöbet değişimi seremonisi.' },
     { icon: '🧜‍♀️', title: 'Küçük Deniz Kızı', desc: 'Andersen masallarından ilham alan, şehrin simgesi ünlü bronz heykel ziyareti.' }
@@ -91,7 +91,7 @@ const kopenhagItinerary7 = [
 
 const hamburgItinerary8 = [
     { icon: '🚌', title: 'Almanya Yolunda', desc: 'Danimarka\'dan feribot ve karayolu bağlantısı ile yeşil rotaları geçerek Hamburg\'a varış.' },
-    { icon: '🏨', title: 'Otele Yerleşim', desc: 'Generator Hotel Hamburg\'a giriş.' },
+    { icon: '🏨', title: 'Otele Yerleşim', desc: 'Generator Hamburg\'a giriş.' },
     { icon: '🧱', title: 'Speicherstadt Tuğla Binalar', desc: 'UNESCO dünya mirası olan, kanallar üzerindeki devasa tarihi antrepo binalarında yürüyüş.' },
     { icon: '🎵', title: 'Elbphilharmonie Plazası', desc: 'Hamburg\'un yeni simgesi dev konser salonunun izleme terasından panoramik liman manzarası.' },
     { icon: '🚢', title: 'Landungsbrücken İskelesi', desc: 'Hamburg limanının kalbinde dev gemilerin geçişini izleme ve akşam yürüyüşü.' }
@@ -114,11 +114,11 @@ const days = [
       districts: stockholmDistricts, itinerary: stockholmItinerary2 },
     { num: 3, date: '24 MAYIS', dayName: 'Pazar', city: 'Oslo', cityClass: 'city-oslo',
       transport: { type: 'bus', icon: '🚌', from: 'Stockholm', to: 'Oslo', dep: '08:00', arr: '15:10', carrier: 'Flixbus' },
-      hotel: 'Radisson Otel Oslo',
+      hotel: 'Radisson Blu Scandinavia Hotel, Oslo',
       districts: osloDistricts, itinerary: osloItinerary3 },
     { num: 4, date: '25 MAYIS', dayName: 'Pazartesi', city: 'Oslo', cityClass: 'city-oslo',
       transport: null,
-      hotel: 'Radisson Otel Oslo',
+      hotel: 'Radisson Blu Scandinavia Hotel, Oslo',
       districts: osloDistricts, itinerary: osloItinerary4 },
     { num: 5, date: '26 MAYIS', dayName: 'Salı', city: 'Göteborg', cityClass: 'city-goteborg',
       transport: { type: 'bus', icon: '🚌', from: 'Oslo', to: 'Göteborg', dep: '07:30', arr: '11:05', carrier: 'Vy Bus' },
@@ -126,15 +126,15 @@ const days = [
       districts: goteborgDistricts, itinerary: goteborgItinerary5 },
     { num: 6, date: '27 MAYIS', dayName: 'Çarşamba', city: 'Kopenhag', cityClass: 'city-kopenhag',
       transport: { type: 'bus', icon: '🚌', from: 'Göteborg', to: 'Kopenhag', dep: '07:00', arr: '11:20', carrier: 'Vy Bus' },
-      hotel: 'Wakeup Comfort Kopenhag',
+      hotel: 'Wakeup Copenhagen, Bernstorffsgade',
       districts: kopenhagDistricts, itinerary: kopenhagItinerary6 },
     { num: 7, date: '28 MAYIS', dayName: 'Perşembe', city: 'Kopenhag', cityClass: 'city-kopenhag',
       transport: null,
-      hotel: 'Wakeup Comfort Kopenhag',
+      hotel: 'Wakeup Copenhagen, Bernstorffsgade',
       districts: kopenhagDistricts, itinerary: kopenhagItinerary7 },
     { num: 8, date: '29 MAYIS', dayName: 'Cuma', city: 'Hamburg', cityClass: 'city-hamburg',
       transport: { type: 'bus', icon: '🚌', from: 'Kopenhag', to: 'Hamburg', dep: '07:45', arr: '13:05', carrier: 'Flixbus' },
-      hotel: 'Generator Hotel Hamburg',
+      hotel: 'Generator Hamburg',
       districts: hamburgDistricts, itinerary: hamburgItinerary8 },
     { num: 9, date: '30 MAYIS', dayName: 'Cumartesi', city: 'Hamburg', cityClass: 'city-hamburg',
       transport: { type: 'flight', icon: '✈️', from: 'HAM', to: 'SAW', dep: '13:50', arr: '16:30', carrier: 'Pegasus' },
