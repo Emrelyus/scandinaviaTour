@@ -143,9 +143,174 @@ const days = [
 ];
 
 const cityStats = {
-    'Stockholm': { temp: '15°C', timezone: 'GMT+2', currency: 'SEK (Kr)', lang: 'İsveççe', lat: 59.3293, lon: 18.0686 },
-    'Oslo':      { temp: '14°C', timezone: 'GMT+2', currency: 'NOK (Kr)', lang: 'Norveççe', lat: 59.9139, lon: 10.7522 },
-    'Göteborg':  { temp: '15°C', timezone: 'GMT+2', currency: 'SEK (Kr)', lang: 'İsveççe', lat: 57.7089, lon: 11.9746 },
-    'Kopenhag':  { temp: '16°C', timezone: 'GMT+2', currency: 'DKK (Kr)', lang: 'Danimarkaca', lat: 55.6761, lon: 12.5683 },
-    'Hamburg':   { temp: '17°C', timezone: 'GMT+2', currency: 'EUR (€)',   lang: 'Almanca', lat: 53.5511, lon: 9.9937 }
+    'Stockholm': { temp: '15°C', timezone: 'GMT+2', currency: 'SEK (Kr)', currencyRate: '1 SEK = 4.88 TL', lang: 'İsveççe', lat: 59.3293, lon: 18.0686 },
+    'Oslo':      { temp: '14°C', timezone: 'GMT+2', currency: 'NOK (Kr)', currencyRate: '1 NOK = 4.92 TL', lang: 'Norveççe', lat: 59.9139, lon: 10.7522 },
+    'Göteborg':  { temp: '15°C', timezone: 'GMT+2', currency: 'SEK (Kr)', currencyRate: '1 SEK = 4.88 TL', lang: 'İsveççe', lat: 57.7089, lon: 11.9746 },
+    'Kopenhag':  { temp: '16°C', timezone: 'GMT+2', currency: 'DKK (Kr)', currencyRate: '1 DKK = 7.09 TL', lang: 'Danimarkaca', lat: 55.6761, lon: 12.5683 },
+    'Hamburg':   { temp: '17°C', timezone: 'GMT+2', currency: 'EUR (€)',   currencyRate: '1 EUR = 53.00 TL', lang: 'Almanca', lat: 53.5511, lon: 9.9937 }
 };
+
+/* ===== DEV TOOLS, SOURCE CODE & RIGHT-CLICK PROTECTION ===== */
+(function() {
+    // 1. Yazı Seçme, Kopyalama ve Sürüklemeyi Engelleme
+    const style = document.createElement('style');
+    style.innerHTML = `
+        * {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+        input, textarea, select {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+        }
+        @media print {
+            body { display: none !important; }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Kopyalama ve Kesme İşlemlerini Durdurma
+    document.addEventListener('copy', e => e.preventDefault());
+    document.addEventListener('cut', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
+    document.addEventListener('selectstart', e => e.preventDefault());
+
+    // 2. Sağ Tık Menüsünü Engelleme
+    document.addEventListener('contextmenu', e => {
+        e.preventDefault();
+        return false;
+    });
+
+    // 3. Geliştirici Kısayollarını Engelleme (Windows ve macOS)
+    document.addEventListener('keydown', e => {
+        // F12 (Geliştirici Araçları)
+        if (e.keyCode === 123 || e.key === 'F12') {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl / Cmd (metaKey) Kontrolleri
+        const isCtrlCmd = e.ctrlKey || e.metaKey;
+        const isShift = e.shiftKey;
+        const isAlt = e.altKey;
+
+        // Ctrl+Shift+I veya Cmd+Opt+I (Öğeyi İncele)
+        if (isCtrlCmd && (isShift || isAlt) && (e.key === 'I' || e.key === 'i' || e.keyCode === 73)) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl+Shift+J veya Cmd+Opt+J (Konsol)
+        if (isCtrlCmd && (isShift || isAlt) && (e.key === 'J' || e.key === 'j' || e.keyCode === 74)) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl+Shift+C veya Cmd+Opt+C (Element Seçici)
+        if (isCtrlCmd && (isShift || isAlt) && (e.key === 'C' || e.key === 'c' || e.keyCode === 67)) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl+Shift+K veya Cmd+Opt+K (Firefox Web Konsolu)
+        if (isCtrlCmd && (isShift || isAlt) && (e.key === 'K' || e.key === 'k' || e.keyCode === 75)) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl+Shift+E veya Cmd+Opt+E (Network sekmesi)
+        if (isCtrlCmd && (isShift || isAlt) && (e.key === 'E' || e.key === 'e' || e.keyCode === 69)) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl+U veya Cmd+U / Cmd+Opt+U (Kaynak Kodunu Görüntüle)
+        if (isCtrlCmd && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl+S veya Cmd+S (Sayfayı Kaydet)
+        if (isCtrlCmd && (e.key === 'S' || e.key === 's' || e.keyCode === 83)) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl+P veya Cmd+P (Sayfayı Yazdır)
+        if (isCtrlCmd && (e.key === 'P' || e.key === 'p' || e.keyCode === 80)) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl+Shift+M (Mobil Görünüm)
+        if (isCtrlCmd && isShift && (e.key === 'M' || e.key === 'm' || e.keyCode === 77)) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // 4. Geliştirici Konsolu Açıldığında Sayfayı Kilitleme / Temizleme
+    const warningDiv = `
+        <div style="
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            background: radial-gradient(circle, #0f172a 0%, #020617 100%); 
+            color: #ef4444; 
+            font-family: 'Outfit', sans-serif; 
+            text-align: center; 
+            padding: 40px;
+            box-sizing: border-box;
+        ">
+            <span style="font-size: 5rem; margin-bottom: 20px; filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.4));">⚠️</span>
+            <h1 style="font-size: 2.2rem; font-weight: 800; margin: 0 0 15px 0; background: linear-gradient(135deg, #ffffff 0%, #ef4444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">GÜVENLİK İHLALİ</h1>
+            <p style="font-size: 1.1rem; color: #94a3b8; max-width: 600px; line-height: 1.6; margin: 0 0 30px 0;">
+                Bu web portalının kaynak kodları ve geliştirici paneline erişim güvenlik nedeniyle engellenmiştir. Lütfen geliştirici araçlarını kapatarak sayfayı yenileyiniz.
+            </p>
+            <button onclick="window.location.reload()" style="
+                background: rgba(239, 68, 68, 0.1); 
+                border: 1px solid #ef4444; 
+                color: #ffffff; 
+                padding: 12px 30px; 
+                border-radius: 30px; 
+                font-family: inherit; 
+                font-size: 1rem; 
+                font-weight: 600; 
+                cursor: pointer; 
+                transition: all 0.3s;
+            " onmouseover="this.style.background='#ef4444'; this.style.boxShadow='0 0 20px rgba(239,68,68,0.5)';" onmouseout="this.style.background='rgba(239,68,68,0.1)'; this.style.boxShadow='none';">
+                Sayfayı Yenile
+            </button>
+        </div>
+    `;
+
+    function detectDevTools() {
+        const devtools = new Image();
+        Object.defineProperty(devtools, 'id', {
+            get: function() {
+                document.body.innerHTML = warningDiv;
+                throw new Error("Geliştirici Konsolu Algılandı!");
+            }
+        });
+        console.log(devtools);
+        console.clear();
+    }
+
+    // Güvenlik denetleme döngüsü (Konsol kontrolü)
+    setInterval(function() {
+        detectDevTools();
+    }, 1000);
+
+    // debugger döngüsü (Konsol açılırsa breakpoint kilitlenmesi sağlar)
+    setInterval(function() {
+        (function() {
+            return false;
+        }['constructor']('debugger')());
+    }, 500);
+})();
