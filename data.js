@@ -150,6 +150,97 @@ const cityStats = {
     'Hamburg':   { temp: '17°C', timezone: 'GMT+2', currency: 'EUR (€)',   currencyRate: '1 EUR = 53.00 TL', lang: 'Almanca', lat: 53.5511, lon: 9.9937 }
 };
 
+const languageGuides = {
+    'İsveççe': [
+        { word: 'Hej', tr: 'Merhaba' },
+        { word: 'Hej då', tr: 'Hoşça kal' },
+        { word: 'Tack', tr: 'Teşekkürler' },
+        { word: 'Snälla', tr: 'Lütfen' },
+        { word: 'Ja', tr: 'Evet' },
+        { word: 'Nej', tr: 'Hayır' },
+        { word: 'God morgon', tr: 'Günaydın' },
+        { word: 'God natt', tr: 'İyi geceler' },
+        { word: 'Mitt namn är...', tr: 'Benim adım...' },
+        { word: 'Hur mår du?', tr: 'Nasılsın?' },
+        { word: 'Bra, tack', tr: 'İyiyim, teşekkürler' },
+        { word: 'Ursäkta', tr: 'Afedersiniz / Pardon' },
+        { word: 'Jag förstår inte', tr: 'Anlamıyorum' },
+        { word: 'Talar du engelska?', tr: 'İngilizce konuşuyor musunuz?' },
+        { word: 'Hur mycket kostar det?', tr: 'Bu ne kadar?' },
+        { word: 'Var är toaletten?', tr: 'Tuvalet nerede?' },
+        { word: 'Hjälp!', tr: 'Yardım edin!' },
+        { word: 'Trevligt att träffas', tr: 'Tanıştığımıza memnun oldum' },
+        { word: 'Välkommen', tr: 'Hoş geldiniz' },
+        { word: 'Skål!', tr: 'Şerefe!' }
+    ],
+    'Norveççe': [
+        { word: 'Hei', tr: 'Merhaba' },
+        { word: 'Ha det', tr: 'Hoşça kal' },
+        { word: 'Takk', tr: 'Teşekkürler' },
+        { word: 'Vær så snill', tr: 'Lütfen' },
+        { word: 'Ja', tr: 'Evet' },
+        { word: 'Nei', tr: 'Hayır' },
+        { word: 'God morgen', tr: 'Günaydın' },
+        { word: 'God natt', tr: 'İyi geceler' },
+        { word: 'Mitt namn er...', tr: 'Benim adım...' },
+        { word: 'Hvordan går det?', tr: 'Nasılsın?' },
+        { word: 'Bra, takk', tr: 'İyiyim, teşekkürler' },
+        { word: 'Unskyld', tr: 'Afedersiniz / Pardon' },
+        { word: 'Jeg forstår ikke', tr: 'Anlamıyorum' },
+        { word: 'Snakker du engelsk?', tr: 'İngilizce konuşuyor musunuz?' },
+        { word: 'Hvor mye koster det?', tr: 'Bu ne kadar?' },
+        { word: 'Hvor er toalettet?', tr: 'Tuvalet nerede?' },
+        { word: 'Hjelp!', tr: 'Yardım edin!' },
+        { word: 'Hyggelig å møte deg', tr: 'Tanıştığımıza memnun oldum' },
+        { word: 'Velkommen', tr: 'Hoş geldiniz' },
+        { word: 'Skål!', tr: 'Şerefe!' }
+    ],
+    'Danimarkaca': [
+        { word: 'Hej', tr: 'Merhaba' },
+        { word: 'Farvel', tr: 'Hoşça kal' },
+        { word: 'Tak', tr: 'Teşekkürler' },
+        { word: 'Behage', tr: 'Lütfen' },
+        { word: 'Ja', tr: 'Evet' },
+        { word: 'Nej', tr: 'Hayır' },
+        { word: 'Godmorgen', tr: 'Günaydın' },
+        { word: 'Godnat', tr: 'İyi geceler' },
+        { word: 'Mit navn er...', tr: 'Benim adım...' },
+        { word: 'Hvordan går det?', tr: 'Nasılsın?' },
+        { word: 'Fint, tak', tr: 'İyiyim, teşekkürler' },
+        { word: 'Undskyld', tr: 'Afedersiniz / Pardon' },
+        { word: 'Jeg forstår ikke', tr: 'Anlamıyorum' },
+        { word: 'Taler du engelsk?', tr: 'İngilizce konuşuyor musunuz?' },
+        { word: 'Hvor meget koster det?', tr: 'Bu ne kadar?' },
+        { word: 'Hvor er toilettet?', tr: 'Tuvalet nerede?' },
+        { word: 'Hjælp!', tr: 'Yardım edin!' },
+        { word: 'Rart at møde dig', tr: 'Tanıştığımıza memnun oldum' },
+        { word: 'Velkommen', tr: 'Hoş geldiniz' },
+        { word: 'Skål!', tr: 'Şerefe!' }
+    ],
+    'Almanca': [
+        { word: 'Hallo', tr: 'Merhaba' },
+        { word: 'Tschüss', tr: 'Hoşça kal' },
+        { word: 'Danke', tr: 'Teşekkürler' },
+        { word: 'Bitte', tr: 'Lütfen' },
+        { word: 'Ja', tr: 'Evet' },
+        { word: 'Nein', tr: 'Hayır' },
+        { word: 'Guten Morgen', tr: 'Günaydın' },
+        { word: 'Gute Nacht', tr: 'İyi geceler' },
+        { word: 'Mein Name ist...', tr: 'Benim adım...' },
+        { word: 'Wie geht es dir?', tr: 'Nasılsın?' },
+        { word: 'Gut, danke', tr: 'İyiyim, teşekkürler' },
+        { word: 'Entschuldigung', tr: 'Afedersiniz / Pardon' },
+        { word: 'Ich verstehe nicht', tr: 'Anlamıyorum' },
+        { word: 'Sprechen Sie Englisch?', tr: 'İngilizce konuşuyor musunuz?' },
+        { word: 'Wie viel kostet das?', tr: 'Bu ne kadar?' },
+        { word: 'Wo ist die Toilette?', tr: 'Tuvalet nerede?' },
+        { word: 'Hilfe!', tr: 'Yardım edin!' },
+        { word: 'Freut mich, Sie kennenzulernen', tr: 'Tanıştığımıza memnun oldum' },
+        { word: 'Willkommen', tr: 'Hoş geldiniz' },
+        { word: 'Prost!', tr: 'Şerefe!' }
+    ]
+};
+
 /* ===== DEV TOOLS, SOURCE CODE & RIGHT-CLICK PROTECTION ===== */
 (function() {
     // 1. Yazı Seçme, Kopyalama ve Sürüklemeyi Engelleme

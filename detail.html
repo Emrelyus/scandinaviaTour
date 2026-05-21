@@ -532,6 +532,133 @@
             0% { transform: scale(0.3); opacity: 0.8; }
             100% { transform: scale(1.5); opacity: 0; }
         }
+
+        /* Clickable Stat card */
+        .stat-card.clickable-stat {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .stat-card.clickable-stat:hover {
+            background: rgba(255, 255, 255, 0.06) !important;
+            border-color: var(--city-color) !important;
+            box-shadow: 0 8px 30px var(--city-color-glow) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Language Dictionary Modal */
+        .lang-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(7, 10, 19, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .lang-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .lang-modal-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 680px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+        .lang-modal-overlay.active .lang-modal-card {
+            transform: translateY(0) scale(1);
+        }
+        .lang-modal-header {
+            padding: 24px 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.01);
+        }
+        .lang-modal-title {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .lang-modal-close-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #94a3b8;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        .lang-modal-close-btn:hover {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+            transform: rotate(90deg);
+        }
+        .lang-modal-body {
+            padding: 28px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .lang-vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        @media (max-width: 580px) {
+            .lang-vocab-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .lang-vocab-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 14px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: all 0.25s;
+        }
+        .lang-vocab-item:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: var(--city-color);
+            transform: translateX(4px);
+        }
+        .vocab-native {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--city-color);
+        }
+        .vocab-tr {
+            font-size: 0.88rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -570,11 +697,12 @@
                 <span style="font-size: 0.72rem; color: #a5b4fc; margin-top: 2px; font-weight: 600;" id="stat-currency-rate">--</span>
             </div>
         </div>
-        <div class="stat-card glass-panel">
+        <div class="stat-card glass-panel clickable-stat" onclick="openLanguageModal()" style="cursor: pointer;">
             <span class="stat-icon">🗣️</span>
             <div class="stat-info">
                 <span class="stat-label">Dil</span>
                 <span class="stat-value" id="stat-lang">--</span>
+                <span style="font-size: 0.72rem; color: #a5b4fc; margin-top: 2px; font-weight: 600;">Pratik Sözlük ↗</span>
             </div>
         </div>
     </div>
@@ -591,6 +719,22 @@
         
         <!-- Right Panel (Districts & Itinerary Timeline) -->
         <div class="detail-right-panel" id="detail-right-panel"></div>
+    </div>
+</div>
+
+<!-- Language Dictionary Modal -->
+<div class="lang-modal-overlay" id="lang-modal" onclick="closeLanguageModal(event)">
+    <div class="lang-modal-card" onclick="event.stopPropagation()">
+        <div class="lang-modal-header">
+            <div class="lang-modal-title">
+                <span class="stat-icon">🗣️</span>
+                <span id="lang-modal-title-text">Pratik Seyahat Sözlüğü</span>
+            </div>
+            <button class="lang-modal-close-btn" onclick="closeLanguageModal()">&times;</button>
+        </div>
+        <div class="lang-modal-body">
+            <div class="lang-vocab-grid" id="lang-vocab-grid"></div>
+        </div>
     </div>
 </div>
 
@@ -776,8 +920,46 @@
         window.location.href = "index.html";
     }
 
-    // Escape key helper
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') goBack(); });
+    // Language Modal Functions
+    function openLanguageModal() {
+        const modal = document.getElementById('lang-modal');
+        const grid = document.getElementById('lang-vocab-grid');
+        const title = document.getElementById('lang-modal-title-text');
+        
+        const langName = stats.lang || 'İsveççe';
+        title.textContent = `${langName} Pratik Sözlük (Top 20 Kelime)`;
+        
+        // Load phrases from database
+        const list = languageGuides[langName] || [];
+        let html = '';
+        list.forEach(item => {
+            html += `
+            <div class="lang-vocab-item">
+                <span class="vocab-native">${item.word}</span>
+                <span class="vocab-tr">${item.tr}</span>
+            </div>`;
+        });
+        
+        grid.innerHTML = html;
+        modal.classList.add('active');
+    }
+
+    function closeLanguageModal(event) {
+        if (event && event.target !== document.getElementById('lang-modal')) return;
+        document.getElementById('lang-modal').classList.remove('active');
+    }
+
+    // Escape key helper updated to close modal first if active, otherwise go back
+    document.addEventListener('keydown', e => { 
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('lang-modal');
+            if (modal && modal.classList.contains('active')) {
+                closeLanguageModal();
+            } else {
+                goBack();
+            }
+        } 
+    });
 </script>
 
 </body>
