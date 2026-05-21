@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seyahat Detayı - İskandinavya Turu 2026</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet.js for Premium Maps Integration -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <style>
+        :root {
+            --bg-dark: #070a13;
+            --bg-card: rgba(255, 255, 255, 0.02);
+            --border-glow: rgba(255, 255, 255, 0.06);
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-heading: 'Outfit', sans-serif;
+
+            /* Dynamic City Theme Variables */
+            --city-hue: 220;
+            --city-sat: 60%;
+            --city-light: 50%;
+            --city-color: hsl(var(--city-hue), var(--city-sat), var(--city-light));
+            --city-color-glow: hsla(var(--city-hue), var(--city-sat), var(--city-light), 0.35);
+            --city-color-alpha: hsla(var(--city-hue), var(--city-sat), var(--city-light), 0.08);
+        }
+
+        body {
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: #f3f4f6;
+            overflow-x: hidden;
+            background: radial-gradient(circle at 50% 0%, #0c1220 0%, #06080e 100%);
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .detail-page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        /* Header Navigation */
+        .nav-bar {
+            margin-bottom: 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #a5b4fc;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-family: var(--font-heading);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--city-color);
+            color: #ffffff;
+            transform: translateX(-4px);
+            box-shadow: 0 6px 20px var(--city-color-glow);
+        }
+
+        /* Glass Cards */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-panel:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* Detail Hero Section */
+        .detail-hero {
+            position: relative;
+            padding: 50px 40px;
+            border-radius: 24px;
+            background: radial-gradient(circle at 85% 50%, var(--city-color-glow) 0%, transparent 65%),
+                        linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .detail-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, var(--city-color-alpha) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .detail-day-num {
+            display: inline-block;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--city-color);
+            font-weight: 800;
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px var(--city-color-glow);
+        }
+
+        .detail-city {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 0 0 12px 0;
+            letter-spacing: -1.5px;
+            background: linear-gradient(135deg, #ffffff 30%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .detail-date {
+            font-size: 1.25rem;
+            color: #9ca3af;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-date::before {
+            content: '📅';
+            font-size: 1.1rem;
+        }
+
+        /* City Quick Stats */
+        .city-quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            border-radius: 16px;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            filter: drop-shadow(0 0 8px var(--city-color-glow));
+        }
+
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 0.72rem;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .stat-value {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-top: 2px;
+        }
+
+        /* Content Grid */
+        .detail-content-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1.8fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .detail-content-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .city-quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .detail-city {
+                font-size: 2.5rem;
+            }
+        }
+
+        .detail-section-title {
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--city-color);
+            margin-bottom: 20px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Timeline / Itinerary Styling */
+        .timeline {
+            position: relative;
+            padding-left: 35px;
+            margin-left: 10px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--city-color) 0%, rgba(255, 255, 255, 0.05) 100%);
+            opacity: 0.5;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-icon {
+            position: absolute;
+            left: -37px;
+            top: 2px;
+            width: 26px;
+            height: 26px;
+            background: #0b0f19;
+            border: 2px solid var(--city-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            z-index: 2;
+            box-shadow: 0 0 10px var(--city-color-glow);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-icon {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px var(--city-color);
+            background: var(--city-color);
+            color: #0c1220;
+        }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .timeline-content:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--city-color);
+            box-shadow: 0 8px 30px var(--city-color-glow);
+            transform: translateX(6px);
+        }
+
+        .timeline-content::after {
+            content: '🗺️ Yönlendir';
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            background: var(--city-color-alpha);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 3px 8px;
+            opacity: 0;
+            color: var(--city-color);
+            transition: all 0.25s ease;
+        }
+
+        .timeline-content:hover::after {
+            opacity: 1;
+            border-color: var(--city-color);
+        }
+
+        .timeline-title {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+            padding-right: 70px;
+        }
+
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        /* Glass Cards for Left Panel */
+        .detail-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .detail-card.clickable {
+            cursor: pointer;
+        }
+
+        .detail-card.clickable:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--city-color);
+            box-shadow: 0 8px 30px var(--city-color-glow);
+            transform: translateY(-2px);
+        }
+
+        .detail-card.clickable::after {
+            content: '🗺️ Harita';
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            background: var(--city-color-alpha);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 3px 8px;
+            opacity: 0;
+            color: var(--city-color);
+            transition: all 0.25s ease;
+        }
+
+        .detail-card.clickable:hover::after {
+            opacity: 1;
+            border-color: var(--city-color);
+        }
+
+        .detail-card-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .detail-card-icon {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 0 8px var(--city-color-glow));
+        }
+
+        .detail-card-info h3 {
+            margin: 0 0 6px 0;
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .detail-card-info p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #9ca3af;
+        }
+
+        .detail-card-sub {
+            margin-top: 6px;
+            font-size: 0.72rem;
+            color: var(--city-color);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+        }
+
+        /* Districts inside page */
+        .detail-districts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .detail-districts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .detail-district-item {
+            border-radius: 14px;
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.01);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .detail-district-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--city-color);
+            box-shadow: 0 6px 20px var(--city-color-glow);
+            transform: translateY(-2px);
+        }
+
+        .detail-district-item::after {
+            content: '↗';
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--city-color);
+            opacity: 0;
+            transition: all 0.25s ease;
+        }
+
+        .detail-district-item:hover::after {
+            opacity: 1;
+        }
+
+        .detail-db-name {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #ffffff;
+            margin-bottom: 6px;
+            padding-right: 20px;
+        }
+
+        .detail-db-desc {
+            font-size: 0.82rem;
+            color: #9ca3af;
+            line-height: 1.5;
+        }
+
+        /* Interactive Map styling */
+        #detail-map {
+            height: 320px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.4);
+            margin-top: 15px;
+        }
+
+        .custom-map-marker {
+            position: relative;
+        }
+
+        .marker-pin {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--city-color);
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 10px var(--city-color);
+        }
+
+        .marker-pulse {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--city-color);
+            opacity: 0.4;
+            animation: marker-pulse 2s infinite ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes marker-pulse {
+            0% { transform: scale(0.3); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="detail-page-container">
+    <div class="nav-bar">
+        <button class="back-btn" onclick="goBack()">← Tüm Günleri Gör</button>
+    </div>
+    
+    <div class="detail-hero" id="detail-hero-el">
+        <div class="detail-day-num" id="detail-day-num"></div>
+        <h1 class="detail-city" id="detail-city"></h1>
+        <div class="detail-date" id="detail-date"></div>
+    </div>
+
+    <div class="city-quick-stats">
+        <div class="stat-card glass-panel">
+            <span class="stat-icon">🌡️</span>
+            <div class="stat-info">
+                <span class="stat-label">Sıcaklık</span>
+                <span class="stat-value" id="stat-temp">--</span>
+            </div>
+        </div>
+        <div class="stat-card glass-panel">
+            <span class="stat-icon">🕒</span>
+            <div class="stat-info">
+                <span class="stat-label">Saat Dilimi</span>
+                <span class="stat-value" id="stat-timezone">--</span>
+            </div>
+        </div>
+        <div class="stat-card glass-panel">
+            <span class="stat-icon">💵</span>
+            <div class="stat-info">
+                <span class="stat-label">Para Birimi</span>
+                <span class="stat-value" id="stat-currency">--</span>
+            </div>
+        </div>
+        <div class="stat-card glass-panel">
+            <span class="stat-icon">🗣️</span>
+            <div class="stat-info">
+                <span class="stat-label">Dil</span>
+                <span class="stat-value" id="stat-lang">--</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="detail-content-grid">
+        <!-- Left Panel (Stats, Transport & Hotel & Map) -->
+        <div class="detail-left-panel">
+            <div id="detail-left-cards"></div>
+            <div id="detail-map-container" class="glass-panel" style="padding: 20px; margin-top: 20px;">
+                <div class="detail-section-title">🗺️ Konum Haritası</div>
+                <div id="detail-map"></div>
+            </div>
+        </div>
+        
+        <!-- Right Panel (Districts & Itinerary Timeline) -->
+        <div class="detail-right-panel" id="detail-right-panel"></div>
+    </div>
+</div>
+
+<!-- Load Shared Database -->
+<script src="data.js"></script>
+
+<script>
+    /* ===== LOGIN SECURITY CHECK ===== */
+    if (localStorage.getItem("tour_logged_in") !== "true") {
+        window.location.href = "index.html";
+    }
+
+    /* ===== PARSE DAY PARAMETER ===== */
+    const urlParams = new URLSearchParams(window.location.search);
+    let dayIndex = parseInt(urlParams.get('day'));
+    if (isNaN(dayIndex) || dayIndex < 0 || dayIndex >= days.length) {
+        dayIndex = 0; // Fallback to day 1
+    }
+
+    const d = days[dayIndex];
+
+    /* ===== SETUP DYNAMIC THEME ===== */
+    const themeColors = {
+        'Stockholm': { hue: 197, sat: '65%', light: '45%' },
+        'Oslo':      { hue: 151, sat: '40%', light: '35%' },
+        'Göteborg':  { hue: 31,  sat: '85%', light: '45%' },
+        'Kopenhag':  { hue: 265, sat: '41%', light: '47%' },
+        'Hamburg':   { hue: 0,   sat: '48%', light: '36%' }
+    };
+    const theme = themeColors[d.city] || { hue: 220, sat: '60%', light: '50%' };
+    
+    const root = document.documentElement;
+    root.style.setProperty('--city-hue', theme.hue);
+    root.style.setProperty('--city-sat', theme.sat);
+    root.style.setProperty('--city-light', theme.light);
+    document.getElementById('detail-hero-el').style.borderTop = `6px solid hsl(${theme.hue}, ${theme.sat}, ${theme.light})`;
+
+    /* ===== LOAD DETAIL VIEWS ===== */
+    document.getElementById('detail-day-num').textContent = `GÜN ${d.num}`;
+    document.getElementById('detail-city').textContent = d.city;
+    document.getElementById('detail-date').textContent = `${d.date} — ${d.dayName}`;
+
+    // Set Stats
+    const stats = cityStats[d.city] || { temp: '--', timezone: '--', currency: '--', lang: '--' };
+    document.getElementById('stat-temp').textContent = stats.temp;
+    document.getElementById('stat-timezone').textContent = stats.timezone;
+    document.getElementById('stat-currency').textContent = stats.currency;
+    document.getElementById('stat-lang').textContent = stats.lang;
+
+    // Google Maps Query helper
+    function openInMaps(query) {
+        const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+        window.open(url, '_blank');
+    }
+
+    // Build Left Cards
+    let leftHtml = '';
+    if (d.transport) {
+        const t = d.transport;
+        const title = t.type === 'flight' ? '✈️ Uçuş Planı' : '🚌 Otobüs Yolculuğu';
+        const searchVal = t.type === 'flight' ? `${t.carrier} Flight ${t.from} to ${t.to}` : `${t.carrier} Bus ${t.from} to ${t.to}`;
+        leftHtml += `
+        <div class="detail-card glass-panel clickable" style="margin-bottom: 20px;" onclick="openInMaps('${searchVal}')">
+            <div class="detail-section-title">${title}</div>
+            <div class="detail-card-row">
+                <div class="detail-card-icon">${t.icon}</div>
+                <div class="detail-card-info">
+                    <h3>${t.from} → ${t.to}</h3>
+                    <p>${t.dep} — ${t.arr}</p>
+                    <div class="detail-card-sub">${t.carrier}</div>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    if (d.hotel) {
+        leftHtml += `
+        <div class="detail-card glass-panel clickable" onclick="openInMaps('${d.hotel}, ${d.city}')">
+            <div class="detail-section-title">🏨 Konaklama Bilgisi</div>
+            <div class="detail-card-row">
+                <div class="detail-card-icon">🏨</div>
+                <div class="detail-card-info">
+                    <h3>Otel Rezervasyonu</h3>
+                    <p>${d.hotel}</p>
+                    <div class="detail-card-sub">Oda Rezervasyonu Aktif</div>
+                </div>
+            </div>
+        </div>`;
+    } else {
+        leftHtml += `
+        <div class="detail-card glass-panel">
+            <div class="detail-section-title">⛺ Konaklama Bilgisi</div>
+            <div class="detail-card-row">
+                <div class="detail-card-icon">⛺</div>
+                <div class="detail-card-info">
+                    <h3>Konaklama Bulunmuyor</h3>
+                    <p>Bugün için otel rezervasyonu bulunmamaktadır.</p>
+                    <div class="detail-card-sub">Serbest Program / Dönüş</div>
+                </div>
+            </div>
+        </div>`;
+    }
+    document.getElementById('detail-left-cards').innerHTML = leftHtml;
+
+    // Build Right Cards
+    let rightHtml = '';
+    if (d.districts) {
+        rightHtml += `
+        <div style="margin-bottom: 30px;">
+            <div class="detail-section-title">🗺️ Gezilecek Bölgeler</div>
+            <div class="detail-districts-grid">`;
+        d.districts.forEach(dist => {
+            rightHtml += `
+            <div class="detail-district-item" style="border-left: 3px solid var(--city-color); background: ${dist.color}" onclick="openInMaps('${dist.name}, ${d.city}')">
+                <div class="detail-db-name">${dist.name}</div>
+                <div class="detail-db-desc">${dist.desc}</div>
+            </div>`;
+        });
+        rightHtml += `</div></div>`;
+    }
+
+    if (d.itinerary) {
+        rightHtml += `
+        <div>
+            <div class="detail-section-title">📅 Günün Seyahat Programı</div>
+            <div class="timeline">`;
+        d.itinerary.forEach(item => {
+            rightHtml += `
+            <div class="timeline-item">
+                <div class="timeline-icon">${item.icon}</div>
+                <div class="timeline-content" onclick="openInMaps('${item.title}, ${d.city}')">
+                    <div class="timeline-title">${item.title}</div>
+                    <div class="timeline-desc">${item.desc}</div>
+                </div>
+            </div>`;
+        });
+        rightHtml += `</div></div>`;
+    } else {
+        rightHtml += `
+        <div>
+            <div class="detail-section-title">📅 Günün Seyahat Programı</div>
+            <div class="detail-card glass-panel" style="text-align: center; padding: 40px 20px;">
+                <span style="font-size: 2.5rem; display: block; margin-bottom: 15px;">🎒</span>
+                <h3 style="margin: 0 0 10px 0; font-size: 1.2rem;">Serbest Keşif Günü</h3>
+                <p style="margin: 0; opacity: 0.6; font-size: 0.9rem; line-height: 1.5;">Bugün planlanmış toplu bir rota bulunmamaktadır. Şehri kendi temponuzda özgürce gezebilirsiniz!</p>
+            </div>
+        </div>`;
+    }
+    document.getElementById('detail-right-panel').innerHTML = rightHtml;
+
+    /* ===== LEAFLET HARİTA KURULUMU ===== */
+    let map = null;
+    function initMap(lat, lon, cityName) {
+        map = L.map('detail-map', {
+            zoomControl: false,
+            attributionControl: false,
+            scrollWheelZoom: false
+        }).setView([lat, lon], 12);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 20
+        }).addTo(map);
+
+        const customIcon = L.divIcon({
+            className: 'custom-map-marker',
+            html: `<div class="marker-pin"></div><div class="marker-pulse"></div>`,
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+
+        L.marker([lat, lon], {icon: customIcon}).addTo(map)
+            .bindPopup(`<div style="color:#111; font-weight:700; font-family:'Outfit',sans-serif; font-size: 0.9rem;">${cityName} Merkez</div>`, { closeButton: false })
+            .openPopup();
+    }
+
+    if (stats.lat && stats.lon) {
+        initMap(stats.lat, stats.lon, d.city);
+    }
+
+    // Go back button helper
+    function goBack() {
+        window.location.href = "index.html";
+    }
+
+    // Escape key helper
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') goBack(); });
+</script>
+
+</body>
+</html>
