@@ -1627,14 +1627,7 @@
     });
 
     /* ===== LOGIN SYSTEM (SHA-256 Secured) ===== */
-    // Kimlik bilgileri ASLA açık metin olarak saklanmaz.
-    // Firebase'den SHA-256 hash'leri çekilir; gerçek şifre hiçbir yerde görünmez.
-    // Şifreyi değiştirmek için Firebase'deki hash değerlerini güncelleyin.
-
-    // Fallback hash'ler (Firebase erişilemezse kullanılır)
-    // admin → SHA-256
     const FALLBACK_KEY_HASH  = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
-    // iskandinavya2026 → SHA-256
     const FALLBACK_PASS_HASH = "a90b3d2faf9d726321391f4a65c2487b1ec9c1c5a8ffff08a117965420f8e5ea";
 
     const FIREBASE_URL = "https://smartpack-31275-default-rtdb.europe-west1.firebasedatabase.app/scanTour";
