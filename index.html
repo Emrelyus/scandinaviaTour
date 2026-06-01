@@ -1742,39 +1742,36 @@
     });
 
     /* ===== LOGIN SYSTEM (SHA-256 Secured) ===== */
-    const FALLBACK_KEY_HASH  = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
-    const FALLBACK_PASS_HASH = "a90b3d2faf9d726321391f4a65c2487b1ec9c1c5a8ffff08a117965420f8e5ea";
-
     const FIREBASE_URL = "https://smartpack-31275-default-rtdb.europe-west1.firebasedatabase.app/scanTour";
 
-    // SHA-256 hash hesaplama (Web Crypto API)
-    async function sha256(message) {
-        const msgBuffer  = new TextEncoder().encode(message);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-        const hashArray  = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    // Double SHA-256 hash hesaplama (Web Crypto API)
+    async function sha256(text) {
+        const enc = new TextEncoder();
+        // 1. tur
+        const buf1 = await crypto.subtle.digest('SHA-256', enc.encode(text));
+        const hex1 = Array.from(new Uint8Array(buf1))
+            .map(b => b.toString(16).padStart(2, '0')).join('');
+        // 2. tur — hash'in hash'i
+        const buf2 = await crypto.subtle.digest('SHA-256', enc.encode(hex1));
+        return Array.from(new Uint8Array(buf2))
+            .map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
     // Firebase'den hash'leri çek
     async function fetchCredentialHashes() {
-        try {
-            const [keyRes, passRes] = await Promise.all([
-                fetch(`${FIREBASE_URL}/key.json`),
-                fetch(`${FIREBASE_URL}/pass.json`)
-            ]);
-            if (!keyRes.ok || !passRes.ok) throw new Error('Firebase fetch failed');
-            const keyHash  = (await keyRes.json())  || '';
-            const passHash = (await passRes.json()) || '';
-            // Temel geçerlilik kontrolü: 64 karakterlik hex string olmalı
-            const hexPattern = /^[0-9a-f]{64}$/;
-            if (hexPattern.test(keyHash) && hexPattern.test(passHash)) {
-                return { keyHash, passHash };
-            }
-            throw new Error('Invalid hash format in Firebase (plain-text detected – please update to hashes)');
-        } catch (err) {
-            console.warn('[Auth] Firebase hash fetch failed, using embedded fallback.', err.message);
-            return { keyHash: FALLBACK_KEY_HASH, passHash: FALLBACK_PASS_HASH };
+        const [keyRes, passRes] = await Promise.all([
+            fetch(`${FIREBASE_URL}/key.json`),
+            fetch(`${FIREBASE_URL}/pass.json`)
+        ]);
+        if (!keyRes.ok || !passRes.ok) throw new Error('Firebase fetch failed');
+        const keyHash  = (await keyRes.json())  || '';
+        const passHash = (await passRes.json()) || '';
+        // Temel geçerlilik kontrolü: 64 karakterlik hex string olmalı
+        const hexPattern = /^[0-9a-f]{64}$/;
+        if (hexPattern.test(keyHash) && hexPattern.test(passHash)) {
+            return { keyHash, passHash };
         }
+        throw new Error('Invalid hash format in Firebase');
     }
 
     // Başlangıç durumu
