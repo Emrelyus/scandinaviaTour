@@ -508,18 +508,11 @@
                     <input
                         id="username"
                         type="text"
-                        value="Emre_Zehra_2026"
-                        readonly
-                        placeholder="Kullanıcı adı"
+                        placeholder="Kullanıcı adınızı girin"
                         aria-label="Kullanıcı adı"
+                        autocomplete="username"
+                        required
                     >
-                    <button
-                        type="button"
-                        class="copy-btn"
-                        id="copyUser"
-                        title="Kopyala"
-                        aria-label="Kullanıcı adını kopyala"
-                    >📋</button>
                 </div>
             </div>
 
@@ -584,7 +577,7 @@
         const STORED_USER_HASH =
             '4a3c8b1fd3dac4cdf3974d30878b96bd56bc9fa0c56e57610ba442df75e52e20'; // SHA-256('Emre_Zehra_2026')
         const STORED_PASS_HASH =
-            '23ac69dc25e2bb9b4197d808ff5f5af5e7798f1b23c6d4065bc78309238f6b0d'; // SHA-256('mCATDJ&m=nm6o$SF')
+            '71b6fdec214f91794115210dee9db6bf99de1d7e466f7ce44ba746aa2e8f4780'; // SHA-256('mCATDJ&m=nm6o$SF')
 
         /* ── SHA-256 helper (Web Crypto API) ── */
         async function sha256(text) {
@@ -632,9 +625,6 @@
             }).catch(() => showToast('Kopyalanamadı.', '❌'));
         }
 
-        document.getElementById('copyUser').addEventListener('click', () => {
-            copyText('Emre_Zehra_2026', document.getElementById('copyUser'), 'Kullanıcı adı');
-        });
 
         /* ── Password strength meter ── */
         const pwInput = document.getElementById('password');
