@@ -567,17 +567,15 @@
 
     <script>
         /* ══════════════════════════════════════════
-           GÜVENLİK: Şifre düz metin saklanmıyor.
-           Doğrulama SHA-256 hash karşılaştırması
-           ile Web Crypto API üzerinden yapılır.
-           SHA-256('mCATDJ&m=nm6o$SF')
-           = 23ac69dc25e2bb9b4197d808ff5f5af5e7798f1b
-             23c6d4065bc78309238f6b0d
+           GÜVENLİK: Hash'ler kod içinde değil,
+           Firebase Realtime Database'de tutulur.
+           Giriş sırasında Firebase'den çekilir ve
+           Web Crypto API (SHA-256) ile karşılaştırılır.
         ══════════════════════════════════════════ */
-        const STORED_USER_HASH =
-            '4a3c8b1fd3dac4cdf3974d30878b96bd56bc9fa0c56e57610ba442df75e52e20'; // SHA-256('Emre_Zehra_2026')
-        const STORED_PASS_HASH =
-            '71b6fdec214f91794115210dee9db6bf99de1d7e466f7ce44ba746aa2e8f4780'; // SHA-256('mCATDJ&m=nm6o$SF')
+
+        /* ── Firebase endpoints ── */
+        const FB_KEY  = 'https://smartpack-31275-default-rtdb.europe-west1.firebasedatabase.app/scanTour/key.json';
+        const FB_PASS = 'https://smartpack-31275-default-rtdb.europe-west1.firebasedatabase.app/scanTour/pass.json';
 
         /* ── SHA-256 helper (Web Crypto API) ── */
         async function sha256(text) {
@@ -586,6 +584,14 @@
             return Array.from(new Uint8Array(buf))
                 .map(b => b.toString(16).padStart(2, '0'))
                 .join('');
+        }
+
+        /* ── Firebase'den hash çek ── */
+        async function fetchHash(url) {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('Firebase bağlantı hatası');
+            const data = await res.json();
+            return data; // string değer döner
         }
 
         /* ── Particles ── */
@@ -625,7 +631,6 @@
             }).catch(() => showToast('Kopyalanamadı.', '❌'));
         }
 
-
         /* ── Password strength meter ── */
         const pwInput = document.getElementById('password');
         const segs    = [1,2,3,4].map(i => document.getElementById('seg'+i));
@@ -650,11 +655,7 @@
             const s = calcStrength(pwInput.value);
             segs.forEach((seg, idx) => {
                 seg.className = 'strength-seg';
-                if (idx < s) {
-                    seg.style.background = colorMap[s];
-                } else {
-                    seg.style.background = 'rgba(255,255,255,.07)';
-                }
+                seg.style.background = idx < s ? colorMap[s] : 'rgba(255,255,255,.07)';
             });
             label.textContent = pwInput.value ? textMap[s] : '';
             label.style.color = s > 0 ? colorMap[s] : '#6b7280';
@@ -681,7 +682,7 @@
             setTimeout(() => card.style.transform = 'translateX(0)', 320);
         }
 
-        /* ── Login form — SHA-256 authentication ── */
+        /* ── Login form — Firebase + SHA-256 authentication ── */
         const form = document.getElementById('loginForm');
         const btn  = document.getElementById('loginBtn');
 
@@ -692,24 +693,32 @@
             const enteredUser = document.getElementById('username').value.trim();
             const enteredPass = pwInput.value;
 
-            /* Hash both inputs with SHA-256 */
-            const [userHash, passHash] = await Promise.all([
-                sha256(enteredUser),
-                sha256(enteredPass)
-            ]);
+            try {
+                /* 1) Firebase'den hash'leri ve girilen değerlerin hash'ini paralel çek */
+                const [storedKey, storedPass, userHash, passHash] = await Promise.all([
+                    fetchHash(FB_KEY),
+                    fetchHash(FB_PASS),
+                    sha256(enteredUser),
+                    sha256(enteredPass)
+                ]);
 
-            await new Promise(r => setTimeout(r, 900)); // auth delay
-
-            if (userHash === STORED_USER_HASH && passHash === STORED_PASS_HASH) {
-                btn.classList.remove('loading');
-                showToast('Giriş başarılı! Yönlendiriliyorsunuz…', '🚀');
-                setTimeout(() => { window.location.href = 'index.html'; }, 1800);
-            } else {
+                /* 2) Karşılaştır */
+                if (userHash === storedKey && passHash === storedPass) {
+                    btn.classList.remove('loading');
+                    showToast('Giriş başarılı! Yönlendiriliyorsunuz…', '🚀');
+                    setTimeout(() => { window.location.href = 'index.html'; }, 1800);
+                } else {
+                    btn.classList.remove('loading');
+                    shakeCard();
+                    showToast('Kullanıcı adı veya şifre hatalı!', '❌');
+                    pwInput.value = '';
+                    pwInput.dispatchEvent(new Event('input'));
+                }
+            } catch (err) {
                 btn.classList.remove('loading');
                 shakeCard();
-                showToast('Kullanıcı adı veya şifre hatalı!', '❌');
-                pwInput.value = '';
-                pwInput.dispatchEvent(new Event('input')); // reset strength bar
+                showToast('Sunucu bağlantısı kurulamadı!', '⚠️');
+                console.error('Firebase fetch error:', err);
             }
         });
     </script>
