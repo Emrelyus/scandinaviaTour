@@ -577,21 +577,24 @@
         const FB_KEY  = 'https://smartpack-31275-default-rtdb.europe-west1.firebasedatabase.app/scanTour/key.json';
         const FB_PASS = 'https://smartpack-31275-default-rtdb.europe-west1.firebasedatabase.app/scanTour/pass.json';
 
-        /* ── SHA-256 helper (Web Crypto API) ── */
+        /* ── Double SHA-256 helper (Web Crypto API) ── */
         async function sha256(text) {
             const enc = new TextEncoder();
-            const buf = await crypto.subtle.digest('SHA-256', enc.encode(text));
-            return Array.from(new Uint8Array(buf))
-                .map(b => b.toString(16).padStart(2, '0'))
-                .join('');
+            // 1. tur
+            const buf1 = await crypto.subtle.digest('SHA-256', enc.encode(text));
+            const hex1 = Array.from(new Uint8Array(buf1))
+                .map(b => b.toString(16).padStart(2, '0')).join('');
+            // 2. tur — hash'in hash'i
+            const buf2 = await crypto.subtle.digest('SHA-256', enc.encode(hex1));
+            return Array.from(new Uint8Array(buf2))
+                .map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
         /* ── Firebase'den hash çek ── */
         async function fetchHash(url) {
             const res = await fetch(url);
             if (!res.ok) throw new Error('Firebase bağlantı hatası');
-            const data = await res.json();
-            return data; // string değer döner
+            return await res.json();
         }
 
         /* ── Particles ── */
