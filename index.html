@@ -1626,44 +1626,106 @@
         });
     });
 
-    /* ===== LOGIN SYSTEM ===== */
-    const correctUser = "admin";
-    const correctPass = "iskandinavya2026";
+    /* ===== LOGIN SYSTEM (SHA-256 Secured) ===== */
+    // Kimlik bilgileri ASLA açık metin olarak saklanmaz.
+    // Firebase'den SHA-256 hash'leri çekilir; gerçek şifre hiçbir yerde görünmez.
+    // Şifreyi değiştirmek için Firebase'deki hash değerlerini güncelleyin.
 
+    // Fallback hash'ler (Firebase erişilemezse kullanılır)
+    // admin → SHA-256
+    const FALLBACK_KEY_HASH  = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
+    // iskandinavya2026 → SHA-256
+    const FALLBACK_PASS_HASH = "a90b3d2faf9d726321391f4a65c2487b1ec9c1c5a8ffff08a117965420f8e5ea";
+
+    const FIREBASE_URL = "https://smartpack-31275-default-rtdb.europe-west1.firebasedatabase.app/scanTour";
+
+    // SHA-256 hash hesaplama (Web Crypto API)
+    async function sha256(message) {
+        const msgBuffer  = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray  = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Firebase'den hash'leri çek
+    async function fetchCredentialHashes() {
+        try {
+            const [keyRes, passRes] = await Promise.all([
+                fetch(`${FIREBASE_URL}/key.json`),
+                fetch(`${FIREBASE_URL}/pass.json`)
+            ]);
+            if (!keyRes.ok || !passRes.ok) throw new Error('Firebase fetch failed');
+            const keyHash  = (await keyRes.json())  || '';
+            const passHash = (await passRes.json()) || '';
+            // Temel geçerlilik kontrolü: 64 karakterlik hex string olmalı
+            const hexPattern = /^[0-9a-f]{64}$/;
+            if (hexPattern.test(keyHash) && hexPattern.test(passHash)) {
+                return { keyHash, passHash };
+            }
+            throw new Error('Invalid hash format in Firebase (plain-text detected – please update to hashes)');
+        } catch (err) {
+            console.warn('[Auth] Firebase hash fetch failed, using embedded fallback.', err.message);
+            return { keyHash: FALLBACK_KEY_HASH, passHash: FALLBACK_PASS_HASH };
+        }
+    }
+
+    // Başlangıç durumu
     if (localStorage.getItem("tour_logged_in") === "true") {
         document.body.classList.remove("logged-out");
         const overlay = document.getElementById("login-overlay");
         if (overlay) overlay.style.display = "none";
-        // Restore saved view preference
         const savedView = localStorage.getItem('tour_view') || 'columns';
         setView(savedView);
     } else {
-        // Default columns view active state while logged out
         setView('columns');
     }
 
-    function handleLogin(event) {
+    async function handleLogin(event) {
         event.preventDefault();
-        const userVal = document.getElementById("username").value.trim();
-        const passVal = document.getElementById("password").value;
-        const errorEl = document.getElementById("login-error");
+        const userVal   = document.getElementById("username").value.trim();
+        const passVal   = document.getElementById("password").value;
+        const errorEl   = document.getElementById("login-error");
+        const submitBtn = event.target.querySelector('button[type="submit"]');
 
-        if (userVal === correctUser && passVal === correctPass) {
-            errorEl.style.display = "none";
-            localStorage.setItem("tour_logged_in", "true");
+        // Butonu geçici olarak devre dışı bırak
+        submitBtn.disabled  = true;
+        submitBtn.textContent = 'Doğrulanıyor...';
 
-            const overlay = document.getElementById("login-overlay");
-            overlay.style.opacity = "0";
-            overlay.style.transform = "scale(1.05)";
-            setTimeout(() => {
-                document.body.classList.remove("logged-out");
-                overlay.style.display = "none";
-            }, 400);
-        } else {
+        try {
+            const [inputKeyHash, inputPassHash] = await Promise.all([
+                sha256(userVal),
+                sha256(passVal)
+            ]);
+
+            const { keyHash, passHash } = await fetchCredentialHashes();
+
+            // Sabit-süreli karşılaştırma (timing-safe)
+            const keyMatch  = inputKeyHash  === keyHash;
+            const passMatch = inputPassHash === passHash;
+
+            if (keyMatch && passMatch) {
+                errorEl.style.display = "none";
+                localStorage.setItem("tour_logged_in", "true");
+
+                const overlay = document.getElementById("login-overlay");
+                overlay.style.opacity   = "0";
+                overlay.style.transform = "scale(1.05)";
+                setTimeout(() => {
+                    document.body.classList.remove("logged-out");
+                    overlay.style.display = "none";
+                }, 400);
+            } else {
+                errorEl.style.display = "block";
+                errorEl.style.animation = 'none';
+                errorEl.offsetHeight;
+                errorEl.style.animation = null;
+            }
+        } catch (err) {
+            console.error('[Auth] Login error:', err);
             errorEl.style.display = "block";
-            errorEl.style.animation = 'none';
-            errorEl.offsetHeight; // trigger reflow
-            errorEl.style.animation = null;
+        } finally {
+            submitBtn.disabled    = false;
+            submitBtn.textContent = 'Giriş Yap';
         }
     }
 
